@@ -2,7 +2,7 @@
 
 A sophisticated web scraping solution for aggregating and displaying course information from the Faculty of Computer Science (FINKI) portal. Built with modern web technologies to demonstrate automated data collection and dynamic content rendering.
 
-IMAGE HERE
+![Landing Page](assets/images/landing-page.png)
 
 ## ✨ Features
 
