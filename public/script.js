@@ -1,12 +1,18 @@
 async function fetchData() {
     try {
-        let response = await fetch('coursesData.json');
+        let response = await fetch('/data/coursesData.json');
         let dataCourses = await response.json();
 
         const container = document.getElementById('courses-container');
         container.innerHTML = '';
 
-        dataCourses.forEach(course => {
+        const sortedCourses = dataCourses.sort((a, b) => {
+            const isSpecialA = ['Консултации', 'Студентски информативен центар'].includes(a.title);
+            const isSpecialB = ['Консултации', 'Студентски информативен центар'].includes(b.title);
+            return isSpecialA ? 1 : isSpecialB ? -1 : 0;
+        });
+
+        sortedCourses.forEach(course => {
             container.appendChild(createCourseCard(course));
         });
 
@@ -16,25 +22,40 @@ async function fetchData() {
 }
 
 function createCourseCard(course) {
-    const metaParts = course.title.split('-');
-    const name = metaParts[0].trim();
-    let year = "N/A", semester = "N/A";
+    const titleParts = course.title.split('-');
+    const metaString = titleParts.length > 1 ? titleParts.pop() : '';
+    const name = titleParts.join('-').trim();
+
+    const metaParts = metaString.split('/').map(part => part.trim());
+    let academicYear = '';
+    let semester = 'N/A';
 
     if (metaParts.length > 1) {
-        const semesterParts = metaParts[1].split('/');
-        year = semesterParts[0]?.trim() || "N/A";
-        semester = semesterParts[1]?.trim() || "N/A";
+        const yearParts = [];
+        for (const part of metaParts) {
+            if (part.match(/^(L|Z)$/i)) {
+                semester = part.toUpperCase();
+            } else {
+                yearParts.push(part);
+            }
+        }
+        academicYear = yearParts.join('/');
     }
+
+    const semesterNames = {
+        'L': 'Летен',
+        'Z': 'Зимски'
+    };
 
     const card = document.createElement('div');
     card.className = 'course-card';
     card.innerHTML = `
-        <div class="academic-year">${year}/${semester}</div>
+        ${academicYear ? `<div class="academic-year">${academicYear}</div>` : ''}
         <h3 class="course-title">${name}</h3>
         <div class="course-meta">
-            <span>Semester: ${semester}</span>
+            ${semester !== 'N/A' ? `<span>Семестар: ${semesterNames[semester] || semester}</span>` : ''}
         </div>
-        <a href="${course.url}" class="course-link" target="_blank">View Course Materials</a>
+        ${course.url ? `<a href="${course.url}" class="course-link" target="_blank">Види материјали</a>` : ''}
     `;
     return card;
 }
