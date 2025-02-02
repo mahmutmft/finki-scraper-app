@@ -1,0 +1,33 @@
+{
+  "name": "finki-scraper-app",
+  "version": "1.0.0",
+  "description": "A web scraper to collect course data from Finki courses page and store them in a JSON file.",
+  "main": "finkiscraper.js",
+  "scripts": {
+    "start": "node finkiscraper.js",
+    "dev": "cross-env NODE_ENV=development node finkiscraper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahmutmft/finki-scraper-app.git"
+  },
+  "keywords": [
+    "finki",
+    "scraper",
+    "courses",
+    "puppeteer",
+    "nodejs"
+  ],
+  "author": "Mahmut Miftaroski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mahmutmft/finki-scraper-app/issues"
+  },
+  "homepage": "https://github.com/mahmutmft/finki-scraper-app#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "puppeteer": "^24.1.1",
+    "fs": "^0.0.1-security",
+    "cross-env": "^7.0.3"
+  }
+}
