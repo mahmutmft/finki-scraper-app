@@ -25,9 +25,10 @@
   },
   "homepage": "https://github.com/mahmutmft/finki-scraper-app#readme",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
-    "puppeteer": "^24.1.1",
+    "express": "^4.21.2",
     "fs": "^0.0.1-security",
-    "cross-env": "^7.0.3"
+    "puppeteer": "^24.1.1"
   }
 }
