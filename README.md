@@ -33,8 +33,8 @@ A sophisticated web scraping solution for aggregating and displaying course info
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/your-username/faculty-courses-directory.git
-cd faculty-courses-directory
+git clone https://github.com/mahmutmft/finki-scraper-app.git
+cd finki-scraper-app
 ```
 ### 2. Install Dependencies
 ```bash
@@ -45,8 +45,8 @@ npm install --production
 Create .env file with your credentials:
 
 ```env
-FINKI_USER="your_university_email@students.finki.ukim.mk"
-FINKI_PASS="your_secure_password"
+FINKI_USER="index"
+FINKI_PASS="password"
 ```
 
 ### 4. Run Data Collection
