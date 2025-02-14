@@ -209,6 +209,15 @@ body {
 .announcements-preview {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding-top: 1rem;
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.announcements-preview.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    border-top: none;
 }
 
 .announcement-item {
@@ -699,4 +708,24 @@ kbd {
 
 .course-card.skeleton {
     height: 200px;
+}
+
+/* Add these styles for announcements toggle */
+.toggle-announcements {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.toggle-announcements i {
+    transition: transform 0.3s ease;
+}
+
+.announcements-preview.collapsed + .card-actions .toggle-announcements i {
+    transform: rotate(0deg);
+}
+
+.announcements-preview:not(.collapsed) + .card-actions .toggle-announcements i {
+    transform: rotate(180deg);
 }
