@@ -2,89 +2,79 @@
 
 A sophisticated web scraping solution for aggregating and displaying course information from the Faculty of Computer Science (FINKI) portal. Built with modern web technologies to demonstrate automated data collection and dynamic content rendering.
 
+## 🎬 Demo
+![FINKI Courses Demo](demo/demo.gif)
+
 ## ✨ Features
 
-- **Automated Course Aggregation**  
-  📥 Web scraper using Puppeteer for reliable data collection
-- **Dynamic Data Presentation**  
-  🎨 Responsive frontend with modern UI/UX design
-- **Search & Filter**  
-  🔍 Real-time course search and semester filtering
-- **Statistics Dashboard**  
-  📊 Overview of courses and announcements
-- **Secure Credential Management**  
-  🔒 Environment variable protection for login details
-- **Persistent Data Storage**  
-  💾 Automatic JSON data caching for offline access
-- **Cross-Platform Compatibility**  
-  🌐 Mobile-first responsive design for all devices
+- **Modern UI/UX Design**  
+  🎨 Clean interface with dark mode support and smooth animations
+- **Real-time Search & Filter**  
+  🔍 Instantly find courses with text search and semester filtering
+- **Interactive Course Cards**  
+  📱 Expandable course cards with announcements preview
+- **Keyboard Shortcuts**  
+  ⌨️ Quick actions with keyboard shortcuts (Press '?' to view all)
+- **Responsive Design**  
+  📱 Mobile-first approach, works on all devices
+- **Smart Notifications**  
+  🔔 Toast notifications for user feedback
+- **Data Caching**  
+  💾 Efficient data handling with local storage
+- **Dark Mode**  
+  🌙 Eye-friendly dark theme with system preference detection
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Node.js v18+ | Puppeteer | Express
-- **Frontend**: Vanilla JavaScript | CSS3 | HTML5
-- **Tooling**: npm | dotenv
+- **Frontend**: Vanilla JavaScript, CSS3, HTML5
+- **Backend**: Node.js, Express
+- **Data Collection**: Puppeteer
+- **Storage**: JSON, Local Storage
 
-## ⚙️ Prerequisites
+## ⚡️ Quick Start
 
-- Node.js v18 or newer
-- npm v9 or newer
-- Chrome/Chromium browser installed
-
-## 🚀 Installation & Setup
-
-### 1. Clone Repository
+1. **Clone & Install**
 ```bash
 git clone https://github.com/mahmutmft/finki-scraper-app.git
 cd finki-scraper-app
+npm install
 ```
 
-### 2. Install Dependencies
+2. **Configure**
 ```bash
-npm install --production
-```
-
-### 3. Configure Environment
-Create .env file in the scraper directory with your credentials:
-```env
+# Create .env in scraper directory
 FINKI_USER="your_username"
 FINKI_PASS="your_password"
 ```
 
-### 4. Start the Application
+3. **Run**
 ```bash
 npm start
-```
-Visit http://localhost:3000 in your browser
-
-## 📂 Project Structure
-```bash
-finki-scraper-app/
-├── public/
-│   ├── index.html
-│   ├── script.js
-│   └── styles.css
-├── scraper/
-│   ├── finkiScraper.js
-│   └── .env
-├── data/
-│   └── coursesData.json
-├── server.js
-└── package.json
+# Visit http://localhost:3000
 ```
 
-## 🔧 Advanced Configuration
+## 🎯 Usage
 
-### Scraper Settings
-You can customize the scraper behavior by modifying these constants:
-- `ANNOUNCEMENT_LIMIT`: Maximum number of announcements to fetch per course
-- `RETRY_ATTEMPTS`: Number of retry attempts for failed requests
-- `TIMEOUT`: Request timeout in milliseconds
+- **Search**: Type to instantly filter courses
+- **Filter**: Use dropdown to filter by semester
+- **Dark Mode**: Click moon/sun icon or press Ctrl+D
+- **Keyboard Shortcuts**: Press '?' to view all shortcuts
+- **Update Data**: Click refresh button or press Ctrl+R
+- **View Course**: Click course card to expand details
 
-### Error Handling
-The application implements comprehensive error handling:
-- Automatic session renewal
-- Request retries with exponential backoff
-- User-friendly error messages
-- Detailed error logging
+---
+
+<div align="center">
+    <p>
+        <a href="https://github.com/mahmutmft">
+            <img src="https://img.shields.io/badge/GitHub-mahmutmft-blue?style=flat-square&logo=github" alt="GitHub">
+        </a>
+        <a href="https://github.com/mahmutmft/finki-scraper-app/blob/main/LICENSE">
+            <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License">
+        </a>
+        <img src="https://img.shields.io/badge/Made%20with-❤️-red?style=flat-square" alt="Made with love">
+    </p>
+    <p>© 2024 Mahmut. All rights reserved.</p>
+</div>
+
 
