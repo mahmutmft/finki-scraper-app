@@ -157,10 +157,22 @@ body {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.3rem 0.8rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem 1rem;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.semester-badge:hover {
+    background: #ffffff;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
 }
 
 .new-badge {
@@ -197,6 +209,15 @@ body {
 .announcements-preview {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding-top: 1rem;
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.announcements-preview.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    border-top: none;
 }
 
 .announcement-item {
@@ -433,7 +454,7 @@ body {
     border: none;
     border-radius: 25px;
     background: rgba(255, 255, 255, 0.1);
-    color: white;
+    color: black;
     font-size: 0.9rem;
     cursor: pointer;
 }
@@ -687,4 +708,24 @@ kbd {
 
 .course-card.skeleton {
     height: 200px;
+}
+
+/* Add these styles for announcements toggle */
+.toggle-announcements {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.toggle-announcements i {
+    transition: transform 0.3s ease;
+}
+
+.announcements-preview.collapsed + .card-actions .toggle-announcements i {
+    transform: rotate(0deg);
+}
+
+.announcements-preview:not(.collapsed) + .card-actions .toggle-announcements i {
+    transform: rotate(180deg);
 }

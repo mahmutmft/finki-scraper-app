@@ -86,7 +86,7 @@ function createCourseCard(course) {
                 </div>
             </div>
             
-            <div class="announcements-preview">
+            <div class="announcements-preview collapsed">
                 ${course.announcements && course.announcements.length > 0 
                     ? course.announcements.slice(0, 3).map(announcement => `
                         <div class="announcement-item">
@@ -112,11 +112,24 @@ function createCourseCard(course) {
                    </a>`
                 : ''
             }
-            <button class="action-button secondary view-announcements">
-                <i class="fas fa-bullhorn"></i> All Announcements
+            <button class="action-button secondary toggle-announcements">
+                <i class="fas fa-chevron-down"></i> Show Announcements
             </button>
         </div>
     `;
+
+    // Add toggle functionality
+    const toggleBtn = card.querySelector('.toggle-announcements');
+    const announcements = card.querySelector('.announcements-preview');
+    
+    toggleBtn.addEventListener('click', () => {
+        announcements.classList.toggle('collapsed');
+        const isCollapsed = announcements.classList.contains('collapsed');
+        toggleBtn.innerHTML = `
+            <i class="fas fa-chevron-${isCollapsed ? 'down' : 'up'}"></i>
+            ${isCollapsed ? 'Show' : 'Hide'} Announcements
+        `;
+    });
 
     return card;
 }
