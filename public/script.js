@@ -205,8 +205,32 @@ function updateStats() {
     `;
 }
 
+function initializeTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const icon = themeToggle.querySelector('i');
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(icon, savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(icon, newTheme);
+    });
+}
+
+function updateThemeIcon(icon, theme) {
+    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initializeSearch();
+    initializeTheme();
     renderCourses();
     document.getElementById('update-btn').addEventListener('click', updateData);
 });

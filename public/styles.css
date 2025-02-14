@@ -1,10 +1,21 @@
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
+    --background-color: #f5f7fa;
+    --text-color: #2c3e50;
+    --card-bg: #ffffff;
     --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --announcement-bg: #f9f9f9;
     --announcement-border: #e0e0e0;
+}
+
+[data-theme="dark"] {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+    --card-bg: #2c2c2c;
 }
 
 * {
@@ -15,7 +26,9 @@
 }
 
 body {
-    background: var(--background-gradient);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease;
     min-height: 100vh;
     padding: 2rem;
 }
@@ -111,7 +124,7 @@ body {
 }
 
 .course-card {
-    background: white;
+    background-color: var(--card-bg);
     border-radius: 10px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -341,4 +354,18 @@ body {
 
 .update-button i {
     margin-right: 0.5rem;
+}
+
+.theme-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
 }
