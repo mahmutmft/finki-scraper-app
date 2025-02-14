@@ -1,14 +1,43 @@
 let isUpdating = false;
 let filteredCourses = [];
 
+// Add this function for the showcase demo course
+function getDemoShowcase() {
+    return {
+        title: "Web Development and Design - WINTER-2023/24",
+        url: "https://github.com/mahmutmft/finki-scraper-app",
+        announcements: [
+            {
+                title: "📝 Final Project Guidelines Released",
+                author: "Dr. Alex Johnson",
+                date: "2024-01-22",
+                content: "Check out the updated project requirements and submission details"
+            },
+            {
+                title: "🚀 React.js Workshop This Friday",
+                author: "Dr. Alex Johnson",
+                date: "2024-01-20",
+                content: "Join us for an interactive session on modern React practices"
+            },
+            {
+                title: "📚 Course Materials Updated",
+                author: "Teaching Assistant Sarah",
+                date: "2024-01-15",
+                content: "New resources added for JavaScript and Node.js modules"
+            }
+        ]
+    };
+}
+
+// Fetch real data and add showcase course
 async function fetchData() {
     try {
         const response = await fetch('/data/coursesData.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const dataCourses = await response.json();
-        return dataCourses;
+        const realCourses = await response.json();
+        return realCourses;
     } catch (error) {
         console.error("Error fetching course data:", error);
         showErrorMessage("Failed to load courses. Please try again later.");
@@ -61,7 +90,7 @@ async function renderCourses() {
 
 function createCourseCard(course) {
     const card = document.createElement('div');
-    card.className = `course-card ${course.isNew ? 'new' : ''}`;
+    card.className = 'course-card';
 
     const titleParts = course.title.split('-');
     const metaString = titleParts.length > 1 ? titleParts.pop() : '';
@@ -69,7 +98,6 @@ function createCourseCard(course) {
 
     card.innerHTML = `
         <div class="card-header">
-            ${course.isNew ? '<span class="badge new-badge">New</span>' : ''}
             <h3 class="course-title">${name}</h3>
             <div class="semester-badge">${metaString}</div>
         </div>
