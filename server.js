@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
+const crypto = require('crypto');
 const app = express();
 
 // Middleware for logging
@@ -62,6 +63,38 @@ app.post('/scrape', (req, res) => {
             timestamp: new Date()
         });
     });
+});
+
+function getCacheKey() {
+    const date = new Date();
+    return crypto.createHash('md5')
+        .update(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`)
+        .digest('hex');
+}
+
+function getCachedData() {
+    const cacheKey = getCacheKey();
+    const cachePath = path.join(dataDir, `cache-${cacheKey}.json`);
+    
+    if (fs.existsSync(cachePath)) {
+        return JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+    }
+    return null;
+}
+
+function setCachedData(data) {
+    const cacheKey = getCacheKey();
+    const cachePath = path.join(dataDir, `cache-${cacheKey}.json`);
+    fs.writeFileSync(cachePath, JSON.stringify(data));
+}
+
+app.get('/data/cached', (req, res) => {
+    const cachedData = getCachedData();
+    if (cachedData) {
+        res.json(cachedData);
+    } else {
+        res.status(404).json({ error: 'No cached data available' });
+    }
 });
 
 const PORT = process.env.PORT || 3000;
