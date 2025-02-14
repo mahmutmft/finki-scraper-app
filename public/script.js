@@ -67,66 +67,56 @@ function createCourseCard(course) {
     const metaString = titleParts.length > 1 ? titleParts.pop() : '';
     const name = titleParts.join('-').trim();
 
-    const metaParts = metaString.split('/').map(part => part.trim());
-    let academicYear = '';
-    let semester = 'N/A';
-
-    if (metaParts.length > 1) {
-        const yearParts = [];
-        for (const part of metaParts) {
-            if (part.match(/^(L|Z)$/i)) {
-                semester = part.toUpperCase();
-            } else {
-                yearParts.push(part);
-            }
-        }
-        academicYear = yearParts.join('/');
-    }
-
-    const semesterNames = {
-        'L': 'Летен',
-        'Z': 'Зимски'
-    };
-
     card.innerHTML = `
-        ${academicYear ? `<div class="academic-year">${academicYear}</div>` : ''}
-        <h3 class="course-title">${name}</h3>
-        <div class="course-meta">
-            ${semester !== 'N/A' ? `<span>Семестар: ${semesterNames[semester] || semester}</span>` : ''}
+        <div class="card-header">
+            ${course.isNew ? '<span class="badge new-badge">New</span>' : ''}
+            <h3 class="course-title">${name}</h3>
+            <div class="semester-badge">${metaString}</div>
         </div>
-        ${course.url ? `<a href="${course.url}" class="course-link" target="_blank">Види материјали</a>` : ''}
-        <div class="announcements">
-            <h4 class="announcements-header">Announcements (${course.announcements?.length || 0})</h4>
-            <div class="announcements-list">
-                ${course.announcements && course.announcements.length > 0
-        ? course.announcements.slice(0, 5).map(announcement => `
-                        <div class="announcement">
-                            <div class="announcement-header">
-                                <span class="announcement-title">${announcement.title}</span>
-                                <span class="announcement-date">${announcement.date}</span>
+        
+        <div class="card-content">
+            <div class="course-stats">
+                <div class="stat">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>${course.announcements?.length || 0} Announcements</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-calendar"></i>
+                    <span>Last Updated: ${new Date().toLocaleDateString()}</span>
+                </div>
+            </div>
+            
+            <div class="announcements-preview">
+                ${course.announcements && course.announcements.length > 0 
+                    ? course.announcements.slice(0, 3).map(announcement => `
+                        <div class="announcement-item">
+                            <i class="fas fa-bell"></i>
+                            <div class="announcement-content">
+                                <h4>${announcement.title}</h4>
+                                <span class="announcement-meta">
+                                    <i class="fas fa-user"></i> ${announcement.author}
+                                    <i class="fas fa-clock"></i> ${new Date(announcement.date).toLocaleDateString()}
+                                </span>
                             </div>
-                            <div class="announcement-author">By: ${announcement.author}</div>
-                            <a href="${announcement.url}" class="announcement-link" target="_blank">Read More</a>
                         </div>
-                      `).join('')
-        : '<p>No announcements available.</p>'}
+                    `).join('')
+                    : '<p class="no-announcements"><i class="fas fa-info-circle"></i> No announcements yet</p>'
+                }
             </div>
         </div>
-    `;
-
-    const announcementHeader = card.querySelector('.announcements-header');
-    const announcementList = card.querySelector('.announcements-list');
-    if (announcementHeader && announcementList) {
-        announcementHeader.style.cursor = 'pointer';
-        announcementHeader.addEventListener('click', () => {
-            announcementList.classList.toggle('expanded');
-            if (announcementList.classList.contains('expanded')) {
-                announcementHeader.textContent = 'Hide Announcements';
-            } else {
-                announcementHeader.textContent = `Announcements (${course.announcements?.length || 0})`;
+        
+        <div class="card-actions">
+            ${course.url 
+                ? `<a href="${course.url}" class="action-button primary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> View Course
+                   </a>`
+                : ''
             }
-        });
-    }
+            <button class="action-button secondary view-announcements">
+                <i class="fas fa-bullhorn"></i> All Announcements
+            </button>
+        </div>
+    `;
 
     return card;
 }
