@@ -1,14 +1,28 @@
 let isUpdating = false;
+let filteredCourses = [];
 
 async function fetchData() {
     try {
-        let response = await fetch('/scraper/coursesData.json');
-        let dataCourses = await response.json();
+        const response = await fetch('/data/coursesData.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const dataCourses = await response.json();
         return dataCourses;
     } catch (error) {
         console.error("Error fetching course data:", error);
+        showErrorMessage("Failed to load courses. Please try again later.");
         return [];
     }
+}
+
+function showErrorMessage(message) {
+    const container = document.getElementById('courses-container');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    container.innerHTML = '';
+    container.appendChild(errorDiv);
 }
 
 async function renderCourses() {
@@ -17,17 +31,8 @@ async function renderCourses() {
 
     try {
         const dataCourses = await fetchData();
-
-
-        const sortedCourses = dataCourses.sort((a, b) => {
-            const isSpecialA = ['Консултации', 'Студентски информативен центар'].includes(a.title);
-            const isSpecialB = ['Консултации', 'Студентски информативен центар'].includes(b.title);
-            return isSpecialA ? 1 : isSpecialB ? -1 : 0;
-        });
-
-        sortedCourses.forEach(course => {
-            container.appendChild(createCourseCard(course));
-        });
+        window.allCourses = dataCourses; // Store all courses globally
+        filterCourses(); // This will handle the rendering
     } catch (error) {
         console.error("Error rendering courses:", error);
     }
@@ -105,31 +110,103 @@ function createCourseCard(course) {
 
     return card;
 }
+
 async function updateData() {
     const updateBtn = document.getElementById('update-btn');
     const loader = document.querySelector('.loader');
     const overlay = document.getElementById('loading-overlay');
+    const btnText = updateBtn.querySelector('.btn-text');
 
     try {
         updateBtn.disabled = true;
         loader.style.display = 'block';
         overlay.style.display = 'flex';
+        btnText.textContent = 'Updating...';
 
-        const response = await fetch('http://localhost:3000/scrape');
+        const response = await fetch('/scrape', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-        if (!response.ok) throw new Error('Update failed');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-        await renderCourses();
+        const result = await response.json();
+        if (result.success) {
+            await renderCourses();
+            btnText.textContent = 'Updated!';
+            setTimeout(() => {
+                btnText.textContent = 'Refresh Data';
+            }, 2000);
+        } else {
+            throw new Error(result.message || 'Update failed');
+        }
     } catch (error) {
         console.error('Update error:', error);
-        alert('Update failed. Please try again.');
+        showErrorMessage('Update failed. Please try again.');
+        btnText.textContent = 'Refresh Failed';
     } finally {
         updateBtn.disabled = false;
         loader.style.display = 'none';
         overlay.style.display = 'none';
     }
 }
+
+function initializeSearch() {
+    const searchInput = document.getElementById('search-input');
+    const semesterFilter = document.getElementById('semester-filter');
+
+    searchInput.addEventListener('input', filterCourses);
+    semesterFilter.addEventListener('change', filterCourses);
+}
+
+function filterCourses() {
+    const searchInput = document.getElementById('search-input');
+    const semesterFilter = document.getElementById('semester-filter');
+    const container = document.getElementById('courses-container');
+    
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedSemester = semesterFilter.value;
+
+    container.innerHTML = '';
+    
+    filteredCourses = window.allCourses.filter(course => {
+        const matchesSearch = course.title.toLowerCase().includes(searchTerm);
+        const matchesSemester = selectedSemester === 'all' || 
+            course.title.includes(selectedSemester);
+        return matchesSearch && matchesSemester;
+    });
+
+    filteredCourses.forEach(course => {
+        container.appendChild(createCourseCard(course));
+    });
+
+    updateStats();
+}
+
+function updateStats() {
+    const statsContainer = document.getElementById('stats-container');
+    const totalCourses = filteredCourses.length;
+    const totalAnnouncements = filteredCourses.reduce((sum, course) => 
+        sum + (course.announcements?.length || 0), 0);
+
+    statsContainer.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-value">${totalCourses}</div>
+            <div class="stat-label">Active Courses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${totalAnnouncements}</div>
+            <div class="stat-label">Total Announcements</div>
+        </div>
+    `;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    initializeSearch();
     renderCourses();
     document.getElementById('update-btn').addEventListener('click', updateData);
 });
