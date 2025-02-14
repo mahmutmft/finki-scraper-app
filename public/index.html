@@ -33,6 +33,9 @@
         <span class="btn-text">Refresh Data</span>
         <div class="loader"></div>
       </button>
+      <button id="help-btn" class="icon-button" data-tooltip="Show Keyboard Shortcuts (Press ?)">
+        <i class="fas fa-keyboard"></i>
+      </button>
     </div>
   </header>
 
@@ -50,6 +53,34 @@
     <div class="loading-spinner"></div>
     <p class="loading-text">Updating courses...</p>
   </div>
+</div>
+<div id="shortcuts-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>⌨️ Keyboard Shortcuts</h2>
+            <button class="modal-close" aria-label="Close modal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="shortcuts-grid">
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>K</kbd>
+                    <span>Focus Search</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>D</kbd>
+                    <span>Toggle Dark Mode</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>R</kbd>
+                    <span>Refresh Data</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>?</kbd>
+                    <span>Show Shortcuts</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="script.js"></script>
 </body>

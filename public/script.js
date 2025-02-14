@@ -60,6 +60,8 @@ async function renderCourses() {
 }
 
 function createCourseCard(course) {
+    const card = document.createElement('div');
+    card.className = `course-card ${course.isNew ? 'new' : ''}`;
 
     const titleParts = course.title.split('-');
     const metaString = titleParts.length > 1 ? titleParts.pop() : '';
@@ -85,9 +87,6 @@ function createCourseCard(course) {
         'L': 'Летен',
         'Z': 'Зимски'
     };
-
-    const card = document.createElement('div');
-    card.className = 'course-card';
 
     card.innerHTML = `
         ${academicYear ? `<div class="academic-year">${academicYear}</div>` : ''}
@@ -273,10 +272,52 @@ function initializeKeyboardShortcuts() {
     });
 }
 
+// Add modal handling
+function initializeModal() {
+    const modal = document.getElementById('shortcuts-modal');
+    const helpBtn = document.getElementById('help-btn');
+    const closeBtn = modal.querySelector('.modal-close');
+
+    function showModal() {
+        modal.classList.add('show');
+    }
+
+    function hideModal() {
+        modal.classList.remove('show');
+    }
+
+    helpBtn.addEventListener('click', showModal);
+    closeBtn.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) hideModal();
+    });
+
+    // Add '?' shortcut
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+            e.preventDefault();
+            showModal();
+        }
+        if (e.key === 'Escape') {
+            hideModal();
+        }
+    });
+}
+
+// Add highlight for new courses
+function highlightNewCourses(oldCourses, newCourses) {
+    const oldIds = new Set(oldCourses.map(c => c.url));
+    return newCourses.map(course => {
+        course.isNew = !oldIds.has(course.url);
+        return course;
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initializeSearch();
     initializeTheme();
     initializeKeyboardShortcuts();
+    initializeModal();
     renderCourses();
     document.getElementById('update-btn').addEventListener('click', updateData);
 });
