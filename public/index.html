@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="header-actions">
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+      <button id="theme-toggle" class="theme-toggle" data-tooltip="Toggle dark mode (Ctrl+D)" aria-label="Toggle dark mode">
         <i class="fas fa-moon"></i>
       </button>
       <select id="semester-filter" class="filter-select">
@@ -28,13 +28,15 @@
         <option value="Z">Winter Semester</option>
         <option value="L">Summer Semester</option>
       </select>
-      <button id="update-btn" class="update-button" aria-label="Refresh course data">
+      <button id="update-btn" class="update-button" data-tooltip="Refresh data (Ctrl+R)" aria-label="Refresh course data">
         <i class="fas fa-sync-alt"></i>
         <span class="btn-text">Refresh Data</span>
         <div class="loader"></div>
       </button>
     </div>
   </header>
+
+  <div id="notification-container" class="notification-container"></div>
 
   <div id="stats-container" class="stats-container">
     <!-- Stats will be inserted here -->

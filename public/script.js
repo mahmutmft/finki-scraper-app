@@ -16,13 +16,34 @@ async function fetchData() {
     }
 }
 
+function showNotification(message, type = 'info', duration = 3000) {
+    const container = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button class="notification-close" aria-label="Close notification">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => notification.remove(), 300);
+    });
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+        setTimeout(() => notification.remove(), 300);
+    }, duration);
+}
+
 function showErrorMessage(message) {
-    const container = document.getElementById('courses-container');
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    container.innerHTML = '';
-    container.appendChild(errorDiv);
+    showNotification(message, 'error', 5000);
 }
 
 async function renderCourses() {
@@ -141,6 +162,7 @@ async function updateData() {
             setTimeout(() => {
                 btnText.textContent = 'Refresh Data';
             }, 2000);
+            showNotification('Data updated successfully!', 'success');
         } else {
             throw new Error(result.message || 'Update failed');
         }
@@ -228,9 +250,33 @@ function updateThemeIcon(icon, theme) {
     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 }
 
+// Add keyboard shortcuts
+function initializeKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Ctrl/Cmd + K to focus search
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('search-input').focus();
+        }
+        
+        // Ctrl/Cmd + R to refresh data
+        if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+            e.preventDefault();
+            updateData();
+        }
+        
+        // Ctrl/Cmd + D to toggle dark mode
+        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+            e.preventDefault();
+            document.getElementById('theme-toggle').click();
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initializeSearch();
     initializeTheme();
+    initializeKeyboardShortcuts();
     renderCourses();
     document.getElementById('update-btn').addEventListener('click', updateData);
 });
